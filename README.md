@@ -97,6 +97,13 @@ npm test
 
 Para saber mais consulte a [Documentação do Jest](https://jest-archive-august-2023.netlify.app/pt-BR/docs/getting-started).
 
+### PADRÕES DE ESTILO E NOMENCLATURA
+- Funções e variáveis em português para favorecer legibilidade.
+- Variáveis booleanas com prefixo `is` (ex.: `isListaVazia`, `isAtendidoPessoa1`).
+- Evitar operadores abreviados como `||` e `++`; preferir condições e incrementos explícitos.
+- Extrair números mágicos para constantes com nomes descritivos (ex.: `LIMITE_ADOCOES_POR_PESSOA = 3`).
+- Manter estruturas simples: `for` tradicionais e `if/else` explícitos (sem arrow functions, map/filter, ternário), visando compreensão por iniciantes.
+
 ### VALIDANDO A ENTREGA
 Para garantir que seu desafio vai ser considerado entregue, revise os seguintes pontos:
 
