@@ -1,0 +1,18 @@
+# MIT License
+# Autor atual: Cascade
+# Data: 10-09-2025
+# Descrição: Arquivo .dockerignore para otimizar build da imagem
+
+node_modules
+npm-debug.log*
+yarn-error.log*
+.pnpm-store
+coverage
+.DS_Store
+.git
+.gitignore
+.idea
+.vscode
+*.swp
+*.swo
+*.log

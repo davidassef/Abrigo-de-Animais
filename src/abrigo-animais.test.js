@@ -31,7 +31,9 @@ describe('Abrigo de Animais', () => {
     const cfg = {
       ANIMAIS_VALIDOS: ['REX', 'SEM_FAV'],
       nomesOriginais: { REX: 'Rex', SEM_FAV: 'SemFav' },
-avid      // favoritosPorAnimal não tem SEM_FAV para acionar fallback de []
+      // favoritosPorAnimal não tem SEM_FAV para acionar fallback de []
+      // ou seja, somente REX é configurado, SEM_FAV ficará undefined
+      favoritosPorAnimal: { REX: ['RATO','BOLA'] }
     };
     const abrigo = new AbrigoAnimais(cfg);
     const resultado = abrigo.encontraPessoas('BOLA', 'RATO', 'SEM_FAV');

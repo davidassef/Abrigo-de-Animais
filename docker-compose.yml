@@ -1,0 +1,26 @@
+# MIT License
+# Autor atual: Cascade
+# Data: 10-09-2025
+# Descrição: Orquestração Docker para executar o projeto e rodar os testes
+
+version: "3.9"
+services:
+  app:
+    container_name: abrigo-animais-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: abrigo-animais:dev
+    working_dir: /app
+    environment:
+      - NODE_ENV=test
+    # Comando padrão roda os testes
+    command: ["npm", "test"]
+    # Se preferir um shell interativo, comente o command acima e descomente abaixo
+    # entrypoint: ["sh", "-lc"]
+    # command: ["node -v && npm -v && echo 'Container pronto' && sleep infinity"]
+    # Volumes não são necessários para rodar testes prontos de forma reprodutível.
+    # Descomente se quiser desenvolvimento interativo com hot-reload (ex.: nodemon)
+    # volumes:
+    #   - ./:/app
+    #   - /app/node_modules

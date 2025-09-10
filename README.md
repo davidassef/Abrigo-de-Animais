@@ -123,3 +123,154 @@ export { AbrigoAnimais as AbrigoAnimais };
 Se todos os passos forem seguidos corretamente, você terá um repositório como o da figura abaixo (lembrando que é permitido criar mais arquivos), onde `seuUsername` é o seu usuário do GitHub, que você informou no questionário da Gupy.
 
 ![Exemplo de repositório](estrutura-repositorio.png)
+
+## INSTALAÇÃO E EXECUÇÃO (LOCAL)
+
+1. Pré-requisitos
+    - Node.js 18+ instalado (recomendado)
+    - NPM (vem junto com o Node)
+
+2. Instalar dependências
+
+```bash
+npm install
+```
+
+3. Rodar os testes (validação da solução)
+
+```bash
+npm test
+```
+
+4. Executar a lógica manualmente (opcional)
+    - Crie um arquivo `run.mjs` na raiz do projeto com o conteúdo abaixo e execute `node run.mjs`.
+
+```javascript
+import { AbrigoAnimais } from './src/abrigo-animais.js';
+
+const resultado = new AbrigoAnimais().encontraPessoas(
+  'RATO,BOLA',
+  'RATO,NOVELO',
+  'Rex,Fofo'
+);
+console.log(resultado);
+```
+
+---
+
+## AMBIENTE DE TESTES
+
+- O projeto utiliza Jest configurado para módulos ES (ESM).
+- O comando `npm test` já executa o Jest com os flags necessários (vide `package.json`).
+- Relatórios de cobertura são gerados na pasta `coverage/` (configurado em `jest.config.js`).
+
+Comandos principais:
+
+```bash
+# Executar testes
+npm test
+
+# (Opcional) remover cobertura anterior
+rm -rf coverage
+```
+
+---
+
+## EXECUÇÃO COM DOCKER
+
+Este repositório já está preparado para ser executado via Docker e Docker Compose. Isso garante um ambiente reprodutível sem necessidade de instalar Node.js localmente.
+
+1. Construir a imagem
+
+```bash
+docker build -t abrigo-animais:dev .
+```
+
+2. Executar os testes com Docker
+
+```bash
+docker run --rm abrigo-animais:dev
+```
+
+3. Usando Docker Compose (recomendado)
+
+```bash
+docker compose up --build app
+```
+
+- O serviço `app` usa a imagem definida no `Dockerfile` e roda `npm test` por padrão.
+- Para encerrar, utilize `Ctrl+C` e, se necessário, `docker compose down`.
+
+4. Desenvolvimento interativo (opcional)
+
+- Se desejar montar o diretório local no container para desenvolvimento, descomente a seção `volumes` no `docker-compose.yml`. Em seguida, rode novamente:
+
+```bash
+docker compose up --build app
+```
+
+Observações:
+- O arquivo `.dockerignore` otimiza o build, ignorando `node_modules`, `coverage`, entre outros.
+- A variável `NODE_ENV=test` é definida no serviço para garantir consistência do ambiente.
+
+---
+
+## EXECUÇÃO VIA TERMINAL (CLI)
+
+O projeto inclui um pequeno CLI para executar a lógica diretamente pelo terminal, sem precisar escrever código adicional.
+
+1. Usando NPM (recomendado)
+
+```bash
+npm start -- 'RATO,BOLA' 'RATO,NOVELO' 'Rex,Fofo'
+```
+
+2. Usando Node diretamente
+
+```bash
+node src/cli.js 'RATO,BOLA' 'RATO,NOVELO' 'Rex,Fofo'
+```
+
+3. (Opcional) Executar o CLI dentro do Docker
+
+- Sobrescrevendo o comando padrão da imagem para chamar o CLI:
+
+```bash
+docker run --rm abrigo-animais:dev node src/cli.js 'RATO,BOLA' 'RATO,NOVELO' 'Rex,Fofo'
+```
+
+- Ou criando um serviço temporário com Docker Compose (sem persistir no arquivo):
+
+```bash
+docker compose run --rm app node src/cli.js 'RATO,BOLA' 'RATO,NOVELO' 'Rex,Fofo'
+```
+
+Observações:
+- O CLI espera exatamente 3 parâmetros de texto (listas separadas por vírgula).
+- Em caso de erro de validação, a saída será um JSON com a propriedade `erro`.
+- Em caso de sucesso, a saída será um JSON com a propriedade `lista` (ordenada alfabeticamente).
+
+---
+
+## APLICAÇÃO INTERATIVA (MENU)
+  
+Foi adicionada uma aplicação interativa de terminal que exibe a lista de animais e pessoas, e permite consultar:
+- A pessoa ideal para um animal escolhido
+- O animal ideal para uma pessoa escolhida
+  
+Para executar:
+  
+```bash
+npm run app
+```
+  
+Exemplo de fluxo:
+  
+- Ao iniciar, o app mostra as listas de animais (com brinquedos favoritos) e pessoas (com seus brinquedos)
+- Menu principal:
+  1. Escolha o animal
+  2. Escolha a pessoa
+  3. Sair
+- Se escolher 1, o app lista os animais numerados e pergunta o número do animal; retorna a pessoa ideal (ou abrigo)
+- Se escolher 2, o app lista as pessoas numeradas e pergunta o número da pessoa; retorna o animal ideal (ou nenhum)
+- Em seguida, é exibido um sub-menu para nova consulta ou sair
